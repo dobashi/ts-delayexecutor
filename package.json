@@ -1,0 +1,40 @@
+{
+  "author": {
+    "name": "Dobashi Masayuki",
+    "email": "dobashi+npm@lavans.jp",
+    "url": "http://github.com/dobashi"
+  },
+  "dependencies": {
+    "typings": "^2.1.1"
+  },
+  "description": "DelayExecutor",
+  "devDependencies": {
+    "ts-node": "^8.4.1",
+    "typescript": "^3.6.3"
+  },
+  "files": [
+    "src/",
+    "dist/",
+    "LICENSE"
+  ],
+  "homepage": "https://github.com/dobashi/ts-delayexecutor",
+  "keywords": [
+    "typescript",
+    "delay",
+    "thread"
+  ],
+  "license": "MIT",
+  "main": "dist/delayexecutor.js",
+  "name": "ts-delayexecutor",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/dobashi/ts-delayexecutor.git"
+  },
+  "scripts": {
+    "build": "tsc -d --outDir dist --lib es2019,dom src/main/delayexecutor.ts",
+    "prepare": "npm run build",
+    "test": "npm run build && ts-node -O '{\"lib\": [ \"es2019\", \"dom\" ]}' src/test/delayexecutor.spec.ts"
+  },
+  "types": "dist/delayexecutor.d.ts",
+  "version": "0.1"
+}
