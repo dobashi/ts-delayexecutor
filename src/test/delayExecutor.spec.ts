@@ -1,20 +1,19 @@
-import { eventually, eventuallySync } from "../main/eventually";
+import { DelayExecutor } from "../main/delayExecutor";
 
-const sync = eventuallySync(() => true);
-console.log(sync);
-sync.then(x => console.log(`sync result: ${x}`));
-
-const result = eventually(() => find("aaa"), 20, 0.2);
-result.then(x => console.log("main result:" + x));
-
-let count = 0;
-const find = async (x: string) => {
-  console.log(`find: called ${count++} times`);
-  if (count > 10) {
-    console.log("find: expect only 1 call");
-    return true;
-  } else {
-    console.log("find: expected throw");
-    throw new Error("find failed");
-  }
-};
+const delay = () => new Promise(resolve => setTimeout(resolve, 1000));
+const dateLog = (id: string) =>
+  console.log(new Date().toUTCString() + ":" + id);
+const ds_nosuspend = new DelayExecutor(() => dateLog("nosus"), 3);
+const ds_suspend = new DelayExecutor(() => dateLog("sus"), 3);
+dateLog("start");
+ds_nosuspend.start();
+ds_suspend.start();
+delay().then(() =>
+  delay().then(() =>
+    delay().then(() =>
+      delay().then(() =>
+        delay().then(() => delay().then(() => ds_suspend.reset()))
+      )
+    )
+  )
+);
