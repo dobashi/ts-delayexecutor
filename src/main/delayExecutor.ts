@@ -1,23 +1,23 @@
 class DelayExecutor {
-  private const INTERVAL = 500
+  private INTERVAL = 500
   private expire: number
-  constructor(private task: ()=>void, private delay: number = 1) {
-    this.expire = new Date().getTime() + toMills(delay)
+  constructor(private task: () => void, private delay: number = 1) {
+    this.expire = new Date().getTime() + this.toMills(delay)
   }
-  public start = (task: ()=>void = this.task, delay: number = this.number) => {
+  public start = (task: () => void = this.task, delay: number = this.delay) => {
     this.task = task
     this.delay = delay
-    this.expire = new Date().getTime() + toMills(delay)
-    setTimeout(exec, INTERVAL)
+    this.expire = new Date().getTime() + this.toMills(delay)
+    setTimeout(this.exec, this.INTERVAL)
   }
   private exec = () => {
     const now = new Date().getTime()
-    if(now > expire){
+    if (now > this.expire) {
       this.task()
-    }else{
-      setTimeout(exec, INTERVAL)
+    } else {
+      setTimeout(this.exec, this.INTERVAL)
     }
   }
-    
-  private toMills = (second) => second * 1000
+
+  private toMills = (second: number) => second * 1000
 }
