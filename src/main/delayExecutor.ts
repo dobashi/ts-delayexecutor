@@ -1,28 +1,23 @@
 export class DelayExecutor {
-  private INTERVAL = 500;
-  private expire: number;
+  private timerId?: NodeJS.Timeout
   constructor(private task: () => void, private delay: number = 1) {
-    this.expire = new Date().getTime() + this.toMills(delay);
+    this.task = task
+    this.delay = delay
   }
   public start = (task: () => void = this.task, delay: number = this.delay) => {
-    this.task = task;
-    this.delay = delay;
-    this.reset();
-    setTimeout(this.exec, this.INTERVAL);
-  };
-  public reset = () => {
-    this.expire = new Date().getTime() + this.toMills(this.delay);
-    const expireString = new Date(this.expire).toUTCString();
-    console.log(new Date().toUTCString() + ": reset() " + expireString);
-  };
+    this.task = task
+    this.delay = delay
+    this.reset()
+  }
+  public reset = (task: () => void = this.task) => {
+    this.task = task
+    this.timerId && clearTimeout(this.timerId)
+    this.timerId = setTimeout(this.exec, this.toMills(this.delay))
+  }
   private exec = () => {
-    const now = new Date().getTime();
-    if (now > this.expire) {
-      this.task();
-    } else {
-      setTimeout(this.exec, this.INTERVAL);
-    }
-  };
+    this.task()
+    this.timerId && clearTimeout(this.timerId)
+  }
 
-  private toMills = (second: number) => second * 1000;
+  private toMills = (second: number) => second * 1000
 }
