@@ -1,6 +1,4 @@
 export class DelayExecutor {
-  private INTERVAL = 500;
-  private expire: number;
   constructor(private task: () => void, private delay: number = 1) {
     this.expire = new Date().getTime() + this.toMills(delay);
   }
@@ -15,6 +13,8 @@ export class DelayExecutor {
     const expireString = new Date(this.expire).toUTCString();
     console.log(new Date().toUTCString() + ": reset() " + expireString);
   };
+  private INTERVAL = 500;
+  private expire: number;
   private exec = () => {
     const now = new Date().getTime();
     if (now > this.expire) {
@@ -23,6 +23,5 @@ export class DelayExecutor {
       setTimeout(this.exec, this.INTERVAL);
     }
   };
-
   private toMills = (second: number) => second * 1000;
 }
