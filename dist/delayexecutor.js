@@ -6,31 +6,26 @@ var DelayExecutor = /** @class */ (function () {
         if (delay === void 0) { delay = 1; }
         this.task = task;
         this.delay = delay;
-        this.INTERVAL = 500;
         this.start = function (task, delay) {
             if (task === void 0) { task = _this.task; }
             if (delay === void 0) { delay = _this.delay; }
             _this.task = task;
             _this.delay = delay;
             _this.reset();
-            setTimeout(_this.exec, _this.INTERVAL);
         };
-        this.reset = function () {
-            _this.expire = new Date().getTime() + _this.toMills(_this.delay);
-            var expireString = new Date(_this.expire).toUTCString();
-            console.log(new Date().toUTCString() + ": reset() " + expireString);
+        this.reset = function (task) {
+            if (task === void 0) { task = _this.task; }
+            _this.task = task;
+            _this.timerId && clearTimeout(_this.timerId);
+            _this.timerId = setTimeout(_this.exec, _this.toMills(_this.delay));
         };
         this.exec = function () {
-            var now = new Date().getTime();
-            if (now > _this.expire) {
-                _this.task();
-            }
-            else {
-                setTimeout(_this.exec, _this.INTERVAL);
-            }
+            _this.task();
+            _this.timerId && clearTimeout(_this.timerId);
         };
         this.toMills = function (second) { return second * 1000; };
-        this.expire = new Date().getTime() + this.toMills(delay);
+        this.task = task;
+        this.delay = delay;
     }
     return DelayExecutor;
 }());

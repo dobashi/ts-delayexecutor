@@ -5,6 +5,7 @@
     "url": "http://github.com/dobashi"
   },
   "dependencies": {
+    "@types/node": "^12.12.7",
     "typings": "^2.1.1"
   },
   "description": "DelayExecutor",
